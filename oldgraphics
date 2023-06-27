@@ -1,0 +1,42 @@
+// ==UserScript==
+// @name Tribal Wars Map Graphics Fix
+// @namespace your-namespace
+// @version 1.0
+// @description Fixes the graphics on the Tribal Wars map
+// @match https://pt91.tribalwars.com.pt/game.php?*
+// @grant none
+// ==/UserScript==
+
+(function() {
+'use strict';
+
+var TWMap = {
+graphics: "https://media.innogames.com/com_DS_FR/mapAssets/veryOld/"
+};
+
+function fixMapGraphics() {
+$("img[id^='map_village']").each(function() {
+var backline = this.src.split("/");
+backline = backline[backline.length - 1];
+this.src = TWMap.graphics + backline;
+});
+}
+
+fixMapGraphics();
+
+var isDragging = false;
+
+$(window).mousedown(function() {
+isDragging = true;
+});
+
+$(window).mouseup(function() {
+if (isDragging) {
+fixMapGraphics();
+isDragging = false;
+}
+});
+
+TWMap.reload();
+
+})();
